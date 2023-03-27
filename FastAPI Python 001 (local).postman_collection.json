@@ -1,0 +1,307 @@
+{
+	"info": {
+		"_postman_id": "c69ea52c-8583-4108-97f0-a5f2a8c65d46",
+		"name": "FastAPI Python 001 (local)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19523042"
+	},
+	"item": [
+		{
+			"name": "Root service",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Responds the root\", function () {",
+							"\tvar jsonData = pm.response.json();",
+							"\tpm.expect(jsonData.message.length).to.gt(0);",
+							"\t});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Responds the root\", function () {",
+							"\tvar jsonData = pm.response.json();",
+							"\tif (Array.isArray(jsonData) && jsonData.length >= 1) {",
+							"\t\tpm.collectionVariables.set(\"userId\", jsonData[jsonData.length-1].id);",
+							"\t}",
+							"\tpm.expect(jsonData).to.haveOwnProperty(\"length\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/user",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"\",\n\t\"name\": \"Mia post\",\n\t\"lastname\": \"Ruiz post\",\n\t\"username\": \"miarg50\",\n\t\"mail\": \"miarg50@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/user",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let rescueId = pm.collectionVariables.get(\"userId\"),",
+							"\tjsonBody = pm.request.body;",
+							"",
+							"if (Object.prototype.hasOwnProperty.call(jsonBody, \"id\")) jsonBody.id = rescueId;",
+							"",
+							"if (!Object.prototype.hasOwnProperty.call(jsonBody, \"id\") && typeof jsonBody === \"string\") {",
+							"\tjsonBody = JSON.parse(jsonBody);",
+							"\tif (Object.prototype.hasOwnProperty.call(jsonBody, \"id\")) jsonBody.id = rescueId;",
+							"\tjsonBody = JSON.stringify(jsonBody);",
+							"}",
+							"",
+							"pm.request.body = jsonBody;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"\",\n\t\"name\": \"Mia putMethod\",\n\t\"lastname\": \"Ruiz putMethod\",\n\t\"username\": \"miarg51putMethod\",\n\t\"mail\": \"miarg51putMethod@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/user/{{userId}}",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users get by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Responds the root\", function () {",
+							"\tvar jsonData = pm.response.json();",
+							"\tpm.expect(jsonData).to.haveOwnProperty(\"id\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/user/{{userId}}",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users delete by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Responds the root\", function () {",
+							"\tvar jsonData = pm.response.json();",
+							"\tpm.expect(jsonData).to.haveOwnProperty(\"id\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/user/{{userId}}",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
