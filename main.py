@@ -79,7 +79,7 @@ async def users():
 async def userCount():
     users = db.table('users')
     # get count of users in database
-    return {"count": users.count()}
+    return {"count": len(users)}
 
 
 @app.get("/user/{id}")
